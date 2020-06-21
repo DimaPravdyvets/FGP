@@ -1,0 +1,2 @@
+load BEDTools/2.16.2 (PATH)
+load TABIX/0.2.6 (PATH,PERL5LIB)

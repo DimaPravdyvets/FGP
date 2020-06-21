@@ -1,0 +1,128 @@
+
+R version 3.3.1 (2016-06-21) -- "Bug in Your Hair"
+Copyright (C) 2016 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> print("Starting to work now!")
+[1] "Starting to work now!"
+> setwd("/scratch/devel/dpravdyvets/gwas_datasets/selected_disorders")
+> adhd<-read.table(gzfile("adhd/verificalo_antes_no_como_siempre.txt.gz"),header= TRUE,comment.char = "?",row.names = NULL)
+> asd<-read.table(gzfile("asd/adj_beta_freq_iPSYCH_PGC_ASD_Nov2017_parsed.chimp.woMD.txt.gz"),header= TRUE,comment.char = "?",row.names = NULL)
+> bip<-read.table(gzfile("bip/adj_beta_freq_daner_PGC_BIP32b_mds7a_0416a_parsed.chimp.woMD.txt.gz"),header= TRUE,comment.char = "?",row.names = NULL)
+> mdd<-read.table(gzfile("mdd/adj_beta_freq_PGC_UKB_depression_genome-wide_parsed_pos_and_chr.chimp.woMD.txt.gz"),header= TRUE,comment.char = "?",row.names = NULL)
+> scz<-read.table(gzfile("scz/adj_beta_freq_daner_natgen_pgc_eur_parsed.chimp.woMD.txt.gz"),header= TRUE,comment.char = "?",row.names = NULL)
+> ocd<-read.table(gzfile("ocd/adj_beta_freq_ocd_aug2017_parsed.chimp.woMD.txt.gz"),header= TRUE,comment.char = "?",row.names = NULL)
+> cannabis<-read.table(gzfile("sud/adj_beta_freq_Cannabis_ICC_23andmetop_UKB_het_parsed.chimp.woMD.txt.gz"),header= TRUE,comment.char = "?",row.names = NULL)
+> 
+> options(scipen=999)
+> Sys.setenv("DISPLAY"=":0.0")
+> options(bitmapType='cairo')
+> 
+> setwd("/scratch/devel/dpravdyvets/gwas_datasets/selected_disorders/final_plots")
+> 
+> print("datasets loaded")
+[1] "datasets loaded"
+> 
+> library(ggplot2)
+> 
+> 
+> 
+> 
+> 
+> TenemEight<-function(d,name){
++ 
++ 
++ print("checkpoint 1")
++ 
++ colnames(d)[which(names(d) == "INFO")] <- "FREQ"
++ colnames(d)[which(names(d) == "X1")] <- "FREQ"
++ colnames(d)[which(names(d) == "P")] <- "PVAL"
++ d$FREQ[d$FREQ==1]<-0.9999999999999
++ d$FREQ[d$FREQ==0]<-0.0000000000001
++ 
++ d$F_BIN<-as.double(substr(d$FREQ,0,3))
++ good_p<-d$PVAL<0.0000001
++ 
++ 
++ print(paste("currently working on:",name))
++ 
++ p1<-ggplot(d[good_p,],aes(x=as.factor(F_BIN),fill=Ancestral))+geom_bar()+geom_text(stat='count', aes(label=..count..), position ="stack",color="black")+
++  labs(title=name,x="DAF",y="Amount of SNPs ")+ scale_fill_discrete(drop=FALSE,name="Ancestral State",labels = c("Risk-Derived", "Risk-Ancestral"))+ scale_x_discrete(drop=FALSE)
++ file_name1=paste(name,"_ancestral_goodP.png",sep="")
++ ggsave(plot = p1,filename=file_name1)
++ 
++ }
+> TenemSix<-function(d,name){
++ 
++ 
++ print("checkpoint 1")
++ 
++ colnames(d)[which(names(d) == "INFO")] <- "FREQ"
++ colnames(d)[which(names(d) == "X1")] <- "FREQ"
++ colnames(d)[which(names(d) == "P")] <- "PVAL"
++ d$FREQ[d$FREQ==1]<-0.9999999999999
++ d$FREQ[d$FREQ==0]<-0.0000000000001
++ 
++ d$F_BIN<-as.double(substr(d$FREQ,0,3))
++ good_p<-d$PVAL<0.00001
++ 
++ 
++ print(paste("currently working on:",name))
++ 
++ p1<-ggplot(d[good_p,],aes(x=as.factor(F_BIN),fill=Ancestral))+geom_bar()+geom_text(stat='count', aes(label=..count..), position ="stack",color="black")+
++  labs(title=name,x="DAF",y="Amount of SNPs ")+ scale_fill_discrete(drop=FALSE,name="Ancestral State",labels = c("Risk-Derived", "Risk-Ancestral"))+ scale_x_discrete(drop=FALSE)
++ file_name1=paste(name,"_ancestral_goodP.png",sep="")
++ ggsave(plot = p1,filename=file_name1)
++ 
++ }
+> 
+> 
+> 
+> 
+> m="MDD"
+> s="SCZ"
+> c="CANNABIS"
+> 
+> TenemEight(mdd,m)
+[1] "checkpoint 1"
+[1] "currently working on: MDD"
+> TenemEight(scz,s)
+[1] "checkpoint 1"
+[1] "currently working on: SCZ"
+> TenemEight(cannabis,c)
+[1] "checkpoint 1"
+[1] "currently working on: CANNABIS"
+> 
+> b="BIP"
+> ad="ADHD"
+> as="ASD"
+> o="OCD"
+> TenemSix(adhd,ad)
+[1] "checkpoint 1"
+[1] "currently working on: ADHD"
+> TenemSix(asd,as)
+[1] "checkpoint 1"
+[1] "currently working on: ASD"
+> TenemSix(ocd,o)
+[1] "checkpoint 1"
+[1] "currently working on: OCD"
+> TenemSix(bip,b)
+[1] "checkpoint 1"
+[1] "currently working on: BIP"
+> 
+> 
+> 

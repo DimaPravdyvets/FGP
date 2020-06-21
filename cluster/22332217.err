@@ -1,0 +1,9 @@
+load gcc/4.9.3-gold (PATH, MANPATH, LD_LIBRARY_PATH)
+load R/3.3.1 (PATH, MANPATH, LD_LIBRARY_PATH)
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
+Saving 7 x 7 in image
